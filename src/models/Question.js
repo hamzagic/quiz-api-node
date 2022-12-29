@@ -4,9 +4,9 @@ const { Schema } = mongoose;
 
 const questionSchema = new Schema({
     title: String,
-    correct_answer: {title: String},
+    correct_answer: String,
     // answers_ids: [mongoose.SchemaTypes.ObjectId],
-    answers: [{title: String}],
+    answers: [String],
     total_answers: Number
 });
 

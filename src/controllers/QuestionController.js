@@ -12,31 +12,17 @@ const create = async (req, res) => {
     const id = req.body.id
 
     if (id) {
-        Question.findByIdAndUpdate(id, {title, max_answers}, (err, docs) => {
-            if(err) {
-                res.status(401).json({error: err});
-            }
-            if(docs) {
-                res.status(201).json({data: docs});
-            }
-        });
+        //const test = await Question.findByIdAndUpdate(id, {title, max_answers, answers, correct_answer});
+        const test = await Question.updateOne({_id: id}, {title, max_answers, answers, correct_answer});
+        console.log('fsdfsdf', test)
+        res.status(201).json({message: 'question updated successfully'});
     } else {
         try {
-            const answer = new Answer({title: correct_answer});
-            let otherAnswers = [];
-            let otherAnswersIds = [];
-            answers.map(title => {
-                otherAnswers = new Answer({title: title});
-                console.log('hsdfs', otherAnswers)
-                otherAnswers.save();
-                otherAnswersIds.push(otherAnswers._id);
-            });
-            answer.save(); 
             const question = new Question({
                 title, 
                 max_answers, 
-                correct_answer_id: answer._id, 
-                answers_ids: otherAnswersIds
+                correct_answer, 
+                answers
             }); 
             await question.save();
             res.status(201).json({message: 'question created', data: question})
@@ -52,7 +38,7 @@ const list = async (req, res) => {
     res.json({data: result})
 };
 
-const update = async (req, res, next) => {
+const update = async (req, res) => {
     const id = req.body.id;
     const title = req.body.title;
     const max_answers = req.body.maxAnswers;
@@ -82,4 +68,4 @@ const deleteQuestion = async (req, res) => {
     }
 }
 
-module.exports = { create, list, update, deleteQuestion };
+module.exports = { create, list, deleteQuestion };
