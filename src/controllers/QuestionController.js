@@ -1,5 +1,4 @@
 const Question = require('../models/Question');
-const Answer = require('../models/Answer');
 
 // TODO: validate if correct answer exists in answers
 // TODO: validate total_answers: will not publish question 
@@ -10,11 +9,10 @@ const create = async (req, res) => {
     const correct_answer = req.body.correct;
     const answers = req.body.answers;
     const id = req.body.id
+    const quizId = req.body.quizId;
 
     if (id) {
-        //const test = await Question.findByIdAndUpdate(id, {title, max_answers, answers, correct_answer});
-        const test = await Question.updateOne({_id: id}, {title, max_answers, answers, correct_answer});
-        console.log('fsdfsdf', test)
+        await Question.updateOne({_id: id}, {title, max_answers, answers, correct_answer});
         res.status(201).json({message: 'question updated successfully'});
     } else {
         try {
@@ -29,7 +27,6 @@ const create = async (req, res) => {
         } catch(e) {
             res.status(401).json({error: e.message})
         }
-
     }
 }
 

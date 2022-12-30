@@ -3,15 +3,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;  
 
 const quizSchema = new Schema({
-    title: { type: String },
-    total_questions: {
-        type: Number
-    },
-    questions: [{question_id: Number}],
-    result_id: {
-        type: Number
-    }
+    title: String,
+    total_questions: Number,
+    questions: [{title: String, correct_answer: String, answers: [String], total_answers: Number}],
+    result_id: mongoose.SchemaTypes.ObjectId
 });
 
-const Quiz = mongoose.model('Quiz', quizSchema);
-module.exports = { Quiz };
+module.exports = mongoose.model('Quiz', quizSchema);

@@ -1,37 +1,37 @@
-const Answer = require('../models/Answer');
+const Result = require('../models/Results');
 const Question = require('../models/Question');
 
 // create is done in Question
-const create = async (req, res, next) => {
+const create = async (req, res) => {
     const title = req.body.title;
 
-    const answer = new Answer({title}); 
-    await answer.save();
-    res.status(201).json({message: 'answer created', data: answer})
+    const result = new Result({title}); 
+    await result.save();
+    res.status(201).json({message: 'answer created', data: result})
 }
 
-const list = async (req, res, next) => {
-   const result = await Answer.find();
+const list = async (req, res) => {
+   const result = await Result.find();
     
     res.json({data: result})
 };
 
-const update = async (req, res, next) => {
+const update = async (req, res) => {
     const id = req.body.id;
     const title = req.body.title;
 
     try {
-        const answer = Answer.findById(id);
-        answer.title = title;
-        await answer.save();
-        res.status(201).json({message: 'answer updated', data: answer})
+        const result = Result.findById(id);
+        result.title = title;
+        await result.save();
+        res.status(201).json({message: 'answer updated', data: result})
     } catch (e) {
         res.status(400).json({error: e.message})
     }
 
 }
 
-const deleteAnswer = async (req, res, next) => {
+const deleteAnswer = async (req, res) => {
     const id = req.body.id;
     const question = await Question.find({answers_ids: id});
     console.log(question);
@@ -42,7 +42,7 @@ const deleteAnswer = async (req, res, next) => {
                 res.status(401).json({message: 'could not delete answer in question ' + err})
         } else{
             console.log("Deleted : ", docs); 
-            Answer.findByIdAndDelete(id, (err2, docs2) => {
+            Result.findByIdAndDelete(id, (err2, docs2) => {
                 if (err2){
                     console.log(err2)
                     res.status(401).json({message: 'could not delete answer ' + err})

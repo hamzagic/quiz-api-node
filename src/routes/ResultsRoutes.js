@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { create, list, update, deleteAnswer } = require('../controllers/AnswerController');
+const { create, list, update, deleteAnswer } = require('../controllers/ResultsController');
 
 router.use((req, res, next) => {
     console.log('router');
