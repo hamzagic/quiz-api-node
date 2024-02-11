@@ -4,8 +4,8 @@ const cors = require('cors');
 
 const { DbConnection } = require('./db/Connect');
 const { connect } = require('./db/MongooseConnect');
-const questionRoutes = require('./routes/QuestionRoutes');
-const answerRoutes = require('./routes/AnswerRoutes');
+const questionRoutes = require('./routes/QuizRoutes');
+const answerRoutes = require('./routes/UserRoutes');
 
 console.log(connect())
 
