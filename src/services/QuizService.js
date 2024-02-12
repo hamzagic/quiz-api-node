@@ -8,13 +8,13 @@ const createService = async({name, creator, totalQuestions, questions}) => {
       error: 'questions array length must be equal to totalQuestions'
     }
   }
-  if (questions.length === 0) {
+  if (!questions || questions.length === 0) {
     return {
       error: 'questions array must not be empty'
     }
   }
   // validate if each question has questionText
-  array.forEach(element => {
+  questions.forEach(element => {
     if (element.questionText === undefined) {
       return {
         error: 'each question must have a questionText'
@@ -41,18 +41,18 @@ const createService = async({name, creator, totalQuestions, questions}) => {
     });
   });
   try {
-        const newQuiz = new Quiz(
-            {
-                quizName: name,
-                creator: creator,
-                numberOfQuestions: totalQuestions,
-                questions: questions,
-            }
-        );
-        await newQuiz.save();
-        return newQuiz;
+    const newQuiz = new Quiz(
+      {
+        quizName: name,
+        creator: creator,
+        numberOfQuestions: totalQuestions,
+        questions: questions,
+      }
+      );
+    await newQuiz.save();
+    return newQuiz;
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
 }
 
@@ -70,7 +70,7 @@ const deleteService = async(id) => {
     const quiz = await Quiz.findOneAndDelete(new ObjectId(id));
     return quiz;
   } catch (error) {
-    console.log(error);
+    console.log("here", error);
   }
 }
 

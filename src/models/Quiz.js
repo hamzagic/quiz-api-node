@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
-
-const { Schema } = mongoose;  
+const mongoose = require('mongoose');
+const { Schema } = mongoose; 
 
 const quizSchema = new Schema({
     id: ObjectId,
@@ -9,16 +8,22 @@ const quizSchema = new Schema({
         type: ObjectId,
         ref: 'user'
     },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
     quizName:{
         type: String,
         required: true,
     },
+    quizImage: {type: String},
     questions: [
         {
             questionText: {
                 type: String,
                 required: true,
             },
+            questionImage: {type: String},
             order: {type: Number, required: true},
             answers: [
                 {

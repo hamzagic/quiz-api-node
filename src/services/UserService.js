@@ -1,5 +1,12 @@
-const {ObjectId} = require('mongodb');
+const { ObjectId } = require('mongodb');
 const User = require('../models/User');
+require('dotenv').config();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const saltRounds = parseInt(process.env.SALT_ROUNDS);
+const tokenSecret = process.env.TOKEN_SECRET;
+
+const { createVerifyToken } = require('../utils/TokenUtils');
 
 const getService = async(id) => {
   try {
@@ -21,7 +28,10 @@ const listService = async() => {
 
 const createService = async({username, email, password}) => {
   try {
-    const newUser = new User({username, email, password});
+    const token = createVerifyToken(); // used to verify account through email on creation
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    const newUser = new User({username, email, password: hashedPassword});
     await newUser.save();
     return newUser;
   } catch (error) {
@@ -42,4 +52,23 @@ const updateService = async(id, {username, email, password}) => {
 
 }
 
-module.exports = { getService, listService, createService, updateService };
+const loginService = async(email, password) => {
+  try {
+    const user = await User.findOne({ email: email });
+    if (user && user.isActive) {
+      const isMatch = bcrypt.compareSync(password, user.password);
+      if (isMatch) {
+        const token = jwt.sign({email, id: new ObjectId(user._id)}, tokenSecret, {expiresIn: '24h'});
+        return {token};
+      } else {
+        return {error: 'Invalid Credentials'};
+      }
+    } else {
+      return {error: 'Could not find user'};
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports = { getService, listService, createService, updateService, loginService };

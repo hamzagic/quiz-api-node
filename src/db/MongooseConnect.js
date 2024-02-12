@@ -6,7 +6,7 @@ mongoose.set('strictQuery', true);
 
 const connect = async () => {
     await mongoose.connect(url);
-    console.log('connected!');
+    console.log('connected!!!');
 }
 
 module.exports = { connect };

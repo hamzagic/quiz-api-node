@@ -1,11 +1,34 @@
 const User = require('../models/User');
-const { getService, listService, createService, updateService } = require('../services/UserService');
+const { validationResult } = require('express-validator');
+const { 
+    getService, 
+    listService, 
+    createService, 
+    updateService, 
+    loginService 
+} = require('../services/UserService');
 
 const create = async (req, res, next) => {
     const { username, email, password} = req.body;
+    if (typeof password !=='string' || typeof username!=='string' || typeof email!=='string') {
+        return res.status(400).json({message: 'bad request, verify field types'});
+    }
 
     const user = await createService({username, email, password}); 
     res.status(201).json({message: 'user created', data: user})
+}
+
+const login = async(req, res, next) => {
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //     return res.json({ success: false, errors: errors.array() });
+    // }
+
+    const email = req.body.email;
+    const password = req.body.password;
+
+    const user = await loginService(email, password);
+    return res.json(user);
 }
 
 const list = async (req, res, next) => {
@@ -55,4 +78,4 @@ const deleteUser = async (req, res, next) => {
     });
 }
 
-module.exports = { create, list, update, deleteUser, getById };
+module.exports = { create, list, update, deleteUser, getById, login };

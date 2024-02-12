@@ -3,15 +3,33 @@ const { createService, listByUserIdService, deleteService } = require('../servic
 
 const create = async (req, res) => {
     const {name, creator, totalQuestions, questions} = req.body;
+    if(!name ||!creator ||!totalQuestions ||!questions) {
+        res.status(400).json({error: 'name, creator, totalQuestions, questions are required'})
+    }
+
+    questions.forEach(question => {
+        if(!question.questionText ||!question.order ||!question.answers) {
+            res.status(400).json({error: 'questionText, order, answers are required'});
+        }
+        question.answers.forEach(answer => {
+            if(!answer.answerText || answer.isCorrect == undefined) {
+                res.status(400).json({error: 'answerText and isCorrect are required'})
+            }
+        });
+    });
     try {
-        await createService({name, creator, totalQuestions, questions});
-        res.status(201).json({message: 'quiz created successfully', data: quiz})
+        const quiz = await createService({name, creator, totalQuestions, questions});
+        if(quiz.error) {
+            res.status(400).json({error: quiz.error})
+        } else {
+            res.status(201).json({message: 'quiz created successfully', data: quiz})
+        }
     } catch(e) {
         res.status(401).json({error: e.message})
     }
 }
 
-const listById = async (req, res) => {
+const listByUserId = async (req, res) => {
     const id = req.params.id;
     const result = await listByUserIdService(id);
     res.json({data: result})
@@ -40,4 +58,4 @@ const deleteQuiz = async (req, res) => {
     res.json({data: result});
 }
 
-module.exports = { create, listById, update, deleteQuiz };
+module.exports = { create, listByUserId, update, deleteQuiz };
