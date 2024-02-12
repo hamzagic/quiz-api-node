@@ -1,28 +1,23 @@
 const Quiz = require('../models/Quiz');
+const { createService, listByUserIdService, deleteService } = require('../services/QuizService');
 
 const create = async (req, res) => {
     const {name, creator, totalQuestions, questions} = req.body;
     try {
-        const quiz = new Quiz(
-            {
-                quizName: name,
-                creator: creator,
-                numberOfQuestions: totalQuestions,
-                questions: questions,
-            }
-        );
-        await quiz.save();
+        await createService({name, creator, totalQuestions, questions});
         res.status(201).json({message: 'quiz created successfully', data: quiz})
     } catch(e) {
         res.status(401).json({error: e.message})
     }
 }
 
-const list = async (req, res) => {
-    const result = await Quiz.find();
+const listById = async (req, res) => {
+    const id = req.params.id;
+    const result = await listByUserIdService(id);
     res.json({data: result})
 };
 
+// todo: only a quiz that has not been shared can be updated
 const update = async (req, res, next) => {
     const {name, creator, totalQuestions, questions} = req.body;
 
@@ -40,13 +35,9 @@ const update = async (req, res, next) => {
 }
 
 const deleteQuiz = async (req, res) => {
-    try {
-        const quiz = Quiz.findById(id);
-        quiz.delete();
-        res.status(201).json({message: 'quiz deleted'});
-    } catch(e) {
-        res.status(401).json({message: 'could not delete quiz ' + e.message});
-    }
+    const id = req.params.id;
+    const result = await deleteService(id);
+    res.json({data: result});
 }
 
-module.exports = { create, list, update, deleteQuiz };
+module.exports = { create, listById, update, deleteQuiz };

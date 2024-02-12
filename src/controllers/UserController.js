@@ -1,18 +1,23 @@
 const User = require('../models/User');
+const { getService, listService, createService, updateService } = require('../services/UserService');
 
 const create = async (req, res, next) => {
     const { username, email, password} = req.body;
 
-    const user = new User({username, email, password}); 
-    await user.save();
+    const user = await createService({username, email, password}); 
     res.status(201).json({message: 'user created', data: user})
 }
 
 const list = async (req, res, next) => {
-   const result = await User.find();
-    
+   const result = await listService();
     res.json({data: result})
 };
+
+const getById = async(req, res, next) => {
+    const id = req.params.id;
+    const user = await getService(id);
+    res.status(200).json({message: 'ok', data: user})
+}
 
 const update = async (req, res, next) => {
     const id = req.body.id;
@@ -20,18 +25,8 @@ const update = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    try {
-        const user = User.findById(id);
-        user.username = username;
-        user.email = email;
-        user.password = password;
-
-        await user.save();
-        res.status(201).json({message: 'user updated successfully', data: user})
-    } catch (e) {
-        res.status(400).json({error: e.message})
-    }
-
+    const user = await updateService(id, {username, email, password});
+    res.status(201).json({message: 'user updated', data: user});
 }
 
 // todo: refactor method to delete also all quizzes related to the user
@@ -60,4 +55,4 @@ const deleteUser = async (req, res, next) => {
     });
 }
 
-module.exports = { create, list, update, deleteUser };
+module.exports = { create, list, update, deleteUser, getById };
