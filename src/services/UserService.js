@@ -41,7 +41,6 @@ const createService = async({username, email, password}) => {
 
 const updateService = async(id, username, email, password) => {
   try {
-    console.log(id);
     const emailExists = await User.findOne({ _id: { $ne: id }, email: email });
     if (emailExists) {
       return {error: 'Email already exists'};
@@ -52,7 +51,7 @@ const updateService = async(id, username, email, password) => {
       return {error: 'Username already exists'};
     }
 
-    const user = await User.findByIdAndUpdate(new ObjectId(id), username, email, password);
+    const user = await User.findByIdAndUpdate(new ObjectId(id), {username, email, password});
     if (user) {
       return true;
     }
