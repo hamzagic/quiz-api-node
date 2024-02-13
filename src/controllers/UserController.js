@@ -47,9 +47,11 @@ const update = async (req, res, next) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-
-    const user = await updateService(id, {username, email, password});
-    res.status(201).json({message: 'user updated', data: user});
+    const user = await updateService(id, username, email, password);
+    if (user && user.error) {
+        return res.status(200).json({error: user.error});
+    } 
+    return res.status(201).json({message: 'user updated', data: user});
 }
 
 // todo: refactor method to delete also all quizzes related to the user

@@ -1,0 +1,13 @@
+User can create account
+User can login
+User can edit their account
+User can delete their account (will delete all quizzes as well)
+When deleting user account, save analytics without user sensitive data
+User can create a quiz
+Quiz has image
+Questions have images
+User can delete a quiz
+User can edit a quiz if it is not shared
+Shared link is generated
+
+As soon as the quiz is generated, 

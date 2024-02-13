@@ -12,6 +12,10 @@ const quizSchema = new Schema({
         type: Boolean,
         default: true,
     },
+    isShared: {
+        type: Boolean,
+        default: false,
+    },
     quizName:{
         type: String,
         required: true,
@@ -34,6 +38,7 @@ const quizSchema = new Schema({
         }
     ],
     numberOfQuestions: {type: Number, required: true},
+    created: { type: Date },
 });
 
 const Quiz = mongoose.model('Quiz', quizSchema);

@@ -39,17 +39,26 @@ const createService = async({username, email, password}) => {
   }
 }
 
-const updateService = async(id, {username, email, password}) => {
+const updateService = async(id, username, email, password) => {
   try {
-    const user = await User.findById(new ObjectId(id));
-    user.username = username;
-    user.email = email;
-    user.password = password;
-    await user.save();
+    console.log(id);
+    const emailExists = await User.findOne({ _id: { $ne: id }, email: email });
+    if (emailExists) {
+      return {error: 'Email already exists'};
+    }
+    const usernameExists = await User.findOne({ _id: { $ne: id }, username: username });
+
+    if (usernameExists) {
+      return {error: 'Username already exists'};
+    }
+
+    const user = await User.findByIdAndUpdate(new ObjectId(id), username, email, password);
+    if (user) {
+      return true;
+    }
   } catch (error) {
     console.log(error);
   }
-
 }
 
 const loginService = async(email, password) => {
