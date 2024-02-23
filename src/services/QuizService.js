@@ -72,9 +72,10 @@ const listByUserIdService = async(id) => {
     }
 }
 
-const getQuizDetails = async(id) => {
+const getQuizDetails = async(id, token) => {
+  console.log(token);
   try {
-    const quiz = await Quiz.find(new ObjectId(id));
+    const quiz = await Quiz.findById(new ObjectId(id));
     return quiz;
   } catch (error) {
     console.log('could not retrieve quiz details', error);

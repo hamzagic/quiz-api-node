@@ -45,7 +45,9 @@ const listByUserId = async (req, res) => {
 
 const getDetails = async (req, res) => {
     const id = req.params.id;
-    const result = await getQuizDetails(id);
+    const token = req.headers.token;
+    console.log(id);
+    const result = await getQuizDetails(id, token);
     res.json({data: result});
 }
 
