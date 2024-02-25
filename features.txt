@@ -10,4 +10,6 @@ User can delete a quiz
 User can edit a quiz if it is not shared
 Shared link is generated
 
+Add logger to api.
+
 As soon as the quiz is generated, 

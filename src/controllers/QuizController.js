@@ -1,5 +1,5 @@
 const Quiz = require('../models/Quiz');
-const { createService, listByUserIdService, deleteService, getQuizDetails } = require('../services/QuizService');
+const { createService, listByUserIdService, deleteByCreator, getQuizDetails } = require('../services/QuizService');
 const { validationResult } = require('express-validator');
 
 const create = async (req, res) => {
@@ -70,7 +70,8 @@ const update = async (req, res, next) => {
 
 const deleteQuiz = async (req, res) => {
     const id = req.params.id;
-    const result = await deleteService(id);
+    const creatorId = req.params.creator;
+    const result = await deleteByCreator(id, creatorId);
     res.json({data: result});
 }
 

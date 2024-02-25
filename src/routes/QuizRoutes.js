@@ -13,7 +13,7 @@ router.get('/api/quiz/:id', listByUserId);
 
 router.post('/api/quiz', quizValidation.quizInputValidation, create);
 
-router.delete('/api/quiz/:id', deleteQuiz);
+router.delete('/api/quiz/:creator/:id', deleteQuiz);
 
 router.get('/api/quiz/details/:id', getDetails);
 

@@ -67,6 +67,7 @@ const loginService = async(email, password) => {
       const isMatch = bcrypt.compareSync(password, user.password);
       if (isMatch) {
         const token = jwt.sign({email, id: new ObjectId(user._id)}, tokenSecret, {expiresIn: '24h'});
+        
         return {token};
       } else {
         return {error: 'Invalid Credentials'};

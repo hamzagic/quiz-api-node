@@ -91,4 +91,13 @@ const deleteService = async(id) => {
   }
 }
 
-module.exports = { createService, listByUserIdService, deleteService, getQuizDetails };
+const deleteByCreator = async(quizId, creatorId) => {
+  try {
+    const quiz = await Quiz.findOneAndDelete({_id: new ObjectId(quizId), creator: creatorId});
+    return quiz;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports = { createService, listByUserIdService, deleteService, getQuizDetails, deleteByCreator };
