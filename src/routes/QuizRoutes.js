@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const quizValidation = require('../validations/quizValidation');
 
-const { create, listByUserId, deleteQuiz, getDetails, update } = require('../controllers/QuizController');
+const { create, listByUserId, deleteQuiz, getDetails, update, share } = require('../controllers/QuizController');
 
 router.use((req, res, next) => {
     console.log('router');
@@ -18,5 +18,7 @@ router.delete('/api/quiz/:creator/:id', deleteQuiz);
 router.get('/api/quiz/details/:id', getDetails);
 
 router.post('/api/quiz/update/:id', update);
+
+router.post('/api/quiz/share/:creator/:id', share);
 
 module.exports = router;

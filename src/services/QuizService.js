@@ -1,9 +1,10 @@
 const {ObjectId} = require('mongodb');
 const Quiz = require('../models/Quiz');
+const { v4: uuidv4 } = require('uuid');
 
-const createService = async({quizName, creator, totalQuestions, questions}) => {
+const createService = async({quizName, creator, numberOfQuestions, questions}) => {
   // validate questions array
-  if (questions.length != totalQuestions) {
+  if (questions.length != numberOfQuestions) {
     return {
       error: 'the number of entered questions must match the total questions.'
     }
@@ -38,7 +39,7 @@ const createService = async({quizName, creator, totalQuestions, questions}) => {
       {
         quizName: quizName,
         creator: creator,
-        numberOfQuestions: totalQuestions,
+        numberOfQuestions: numberOfQuestions,
         questions: questions,
         created: new Date()
       }
@@ -97,11 +98,27 @@ const deleteByCreator = async(quizId, creatorId) => {
   }
 }
 
+const shareQuizService = async (quizId, creatorId) => {
+  const sharedToken = uuidv4();
+  try {
+    const quiz = await Quiz.findOneAndUpdate({ _id: quizId, creator: creatorId }, {sharedLink: sharedToken, isShared: true}, { new: true });
+    if (quiz) {
+      return quiz;
+    } else { 
+      return 'Could not share quiz';
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
 module.exports = { 
   createService, 
   listByUserIdService, 
   deleteService, 
   getQuizDetails, 
   deleteByCreator, 
-  updateService 
+  updateService,
+  shareQuizService 
 };

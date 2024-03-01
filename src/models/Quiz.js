@@ -29,17 +29,13 @@ const quizSchema = new Schema({
             },
             questionImage: {type: String},
             order: {type: Number, required: true},
-            answers: [ {type: String, required: true}
-                // {
-                //     answerText: {type: String, required: true},
-                //     isCorrect: {type: String, required: true},
-                // }
-            ],
+            answers: [ {type: String, required: true} ],
             correctAnswerIndex: {type: Number, required: true}
         }
     ],
     numberOfQuestions: {type: Number, required: true},
     created: { type: Date },
+    sharedLink: { type: String, unique: true }
 });
 
 const Quiz = mongoose.model('Quiz', quizSchema);

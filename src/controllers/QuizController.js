@@ -1,15 +1,22 @@
 const Quiz = require('../models/Quiz');
-const { createService, listByUserIdService, deleteByCreator, getQuizDetails, updateService } = require('../services/QuizService');
+const { 
+    createService, 
+    listByUserIdService, 
+    deleteByCreator, 
+    getQuizDetails, 
+    updateService, 
+    shareQuizService 
+} = require('../services/QuizService');
 const { validationResult } = require('express-validator');
 
 const create = async (req, res) => {
-    const {quizName, creator, totalQuestions, questions} = req.body;
+    const {quizName, creator, numberOfQuestions, questions} = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(200).json({ errors: errors.array() });
     }
     try {
-        const quiz = await createService({quizName, creator, totalQuestions, questions});
+        const quiz = await createService({quizName, creator, numberOfQuestions, questions});
         if(quiz.error) {
             console.log("try called");
             res.status(200).json({error: quiz.error})
@@ -37,10 +44,10 @@ const getDetails = async (req, res) => {
 }
 
 // todo: only a quiz that has not been shared can be updated
-const update = async (req, res, next) => {
-    const {name, creator, totalQuestions, questions} = req.body;
+const update = async (req, res) => {
+    const {quizName, creator, numberOfQuestions, questions} = req.body;
     const id = req.params.id;
-    const result = await updateService(id, {name, creator, totalQuestions, questions});
+    const result = await updateService(id, {quizName, creator, numberOfQuestions, questions});
     res.json({data: result});
 }
 
@@ -51,4 +58,11 @@ const deleteQuiz = async (req, res) => {
     res.json({data: result});
 }
 
-module.exports = { create, listByUserId, update, deleteQuiz, getDetails };
+const share = async (req, res) => {
+    const id = req.params.id;
+    const creatorId = req.params.creator;
+    const result = await shareQuizService(id, creatorId);
+    res.json({data: result});
+}
+
+module.exports = { create, listByUserId, update, deleteQuiz, getDetails, share };
