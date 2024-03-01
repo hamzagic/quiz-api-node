@@ -1,5 +1,5 @@
 const Quiz = require('../models/Quiz');
-const { createService, listByUserIdService, deleteByCreator, getQuizDetails } = require('../services/QuizService');
+const { createService, listByUserIdService, deleteByCreator, getQuizDetails, updateService } = require('../services/QuizService');
 const { validationResult } = require('express-validator');
 
 const create = async (req, res) => {
@@ -54,18 +54,9 @@ const getDetails = async (req, res) => {
 // todo: only a quiz that has not been shared can be updated
 const update = async (req, res, next) => {
     const {name, creator, totalQuestions, questions} = req.body;
-
-    try {
-        const quiz = Quiz.findById(id);
-        quiz.quizName = name;
-        quiz.creator = creator;
-        quiz.numberOfQuestions = totalQuestions;
-        quiz.questions = questions
-        await quiz.save();
-        res.status(201).json({message: 'quiz updated successfully', data: quiz})
-    } catch (e) {
-        res.status(400).json({error: e.message})
-    }
+    const id = req.params.id;
+    const result = await updateService(id, {name, creator, totalQuestions, questions});
+    res.json({data: result});
 }
 
 const deleteQuiz = async (req, res) => {

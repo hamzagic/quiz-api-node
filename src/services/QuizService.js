@@ -82,6 +82,15 @@ const getQuizDetails = async(id, token) => {
   }
 }
 
+const updateService = async(id, data) => {
+  try {
+    const quiz = await Quiz.findByIdAndUpdate(new ObjectId(id), data, {new: true});
+    return quiz;
+  } catch (error) {
+    console.log('could not update quiz')
+  }
+}
+
 const deleteService = async(id) => {
   try {
     const quiz = await Quiz.findOneAndDelete(new ObjectId(id));
@@ -100,4 +109,11 @@ const deleteByCreator = async(quizId, creatorId) => {
   }
 }
 
-module.exports = { createService, listByUserIdService, deleteService, getQuizDetails, deleteByCreator };
+module.exports = { 
+  createService, 
+  listByUserIdService, 
+  deleteService, 
+  getQuizDetails, 
+  deleteByCreator, 
+  updateService 
+};
