@@ -1,7 +1,7 @@
 const {ObjectId} = require('mongodb');
 const Quiz = require('../models/Quiz');
 
-const createService = async({name, creator, totalQuestions, questions}) => {
+const createService = async({quizName, creator, totalQuestions, questions}) => {
   // validate questions array
   if (questions.length != totalQuestions) {
     return {
@@ -32,24 +32,11 @@ const createService = async({name, creator, totalQuestions, questions}) => {
         error: 'no answers have been entered.'
       }
     }
-    // validate if each answer has answerText
-    // element.answers.forEach(answer => {
-    //   if (answer.answerText === undefined) {
-    //     return {
-    //       error: 'each answer must have a text.'
-    //     }
-    //   }
-    //   if (answer.isCorrect === undefined) {
-    //     return {
-    //       error: 'each answer must have an isCorrect parameter.'
-    //     }
-    //   }
-    // });
   });
   try {
     const newQuiz = new Quiz(
       {
-        quizName: name,
+        quizName: quizName,
         creator: creator,
         numberOfQuestions: totalQuestions,
         questions: questions,
@@ -83,6 +70,7 @@ const getQuizDetails = async(id, token) => {
 }
 
 const updateService = async(id, data) => {
+  console.log(data);
   try {
     const quiz = await Quiz.findByIdAndUpdate(new ObjectId(id), data, {new: true});
     return quiz;

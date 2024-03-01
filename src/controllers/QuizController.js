@@ -3,28 +3,13 @@ const { createService, listByUserIdService, deleteByCreator, getQuizDetails, upd
 const { validationResult } = require('express-validator');
 
 const create = async (req, res) => {
-    const {name, creator, totalQuestions, questions} = req.body;
+    const {quizName, creator, totalQuestions, questions} = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(200).json({ errors: errors.array() });
     }
-
-    // questions.forEach(question => {
-    //     if(!question.questionText ||!question.order ||!question.answers) {
-    //         console.log("first one");
-    //         validationErrors.push('questionText, order, answers are required');
-    //         return; 
-    //     }
-    //     question.answers.forEach(answer => {
-    //         if(!answer.answerText || answer.isCorrect == undefined) {
-    //             console.log("second");
-    //             validationErrors.push('answerText and isCorrect are required');
-    //             return;
-    //         }
-    //     });
-    // });
     try {
-        const quiz = await createService({name, creator, totalQuestions, questions});
+        const quiz = await createService({quizName, creator, totalQuestions, questions});
         if(quiz.error) {
             console.log("try called");
             res.status(200).json({error: quiz.error})
