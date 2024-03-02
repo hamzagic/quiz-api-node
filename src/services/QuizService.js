@@ -110,7 +110,36 @@ const shareQuizService = async (quizId, creatorId) => {
   } catch (error) {
     console.log(error);
   }
+}
 
+const getQuizClientData = async (id) => {
+  try {
+    const quiz = await Quiz.findOne({sharedLink: id});
+    const updatedQuestions = [];
+    quiz.questions.map(question => {
+      const el = {
+        questionText: question.questionText,
+        answers: question.answers,
+        order: question.order,
+        questionImage: question.questionImage,
+      }
+      updatedQuestions.push(el);
+    })
+    const quizData = {
+      id: quiz._id,
+      creator: quiz.creator,
+      created: quiz.created,
+      isActive: quiz.isActive,
+      isShared: quiz.isShared,
+      numberOfQuestions: quiz.numberOfQuestions,
+      quizName: quiz.quizName,
+      sharedLink: quiz.sharedLink,
+      questions: updatedQuestions
+    }
+    return quizData;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 module.exports = { 
@@ -120,5 +149,6 @@ module.exports = {
   getQuizDetails, 
   deleteByCreator, 
   updateService,
-  shareQuizService 
+  shareQuizService,
+  getQuizClientData 
 };

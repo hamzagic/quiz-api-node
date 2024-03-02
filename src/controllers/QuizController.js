@@ -5,7 +5,8 @@ const {
     deleteByCreator, 
     getQuizDetails, 
     updateService, 
-    shareQuizService 
+    shareQuizService,
+    getQuizClientData 
 } = require('../services/QuizService');
 const { validationResult } = require('express-validator');
 
@@ -65,4 +66,10 @@ const share = async (req, res) => {
     res.json({data: result});
 }
 
-module.exports = { create, listByUserId, update, deleteQuiz, getDetails, share };
+const renderOnPage = async (req, res) => {
+    const id = req.params.id;
+    const result = await getQuizClientData(id);
+    res.json({data: result});
+}
+
+module.exports = { create, listByUserId, update, deleteQuiz, getDetails, share, renderOnPage };
