@@ -12,10 +12,10 @@ const createService = async (data) => {
         answers: data.answers
       });
       await newAttempt.save();
-      return newAttempt;
-    } catch (error) {
-      console.log(error);
-      return error;
+      return true;
+    } catch (err) {
+      console.log(err);
+      return {error: err};
     }
   } else {
     return {error: 'No quiz found'}

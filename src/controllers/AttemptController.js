@@ -8,7 +8,9 @@ const create = async (req, res) => {
     return res.status(200).json({ errors: errors.array() });
   } 
   const result = await createService({name, email, quizToken, answers});
-  res.json({result}); 
+  if (!result.error) {
+    res.json({message: 'Quiz submitted successfully'}); 
+  }
 }
 
 module.exports = { create };
