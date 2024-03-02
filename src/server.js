@@ -6,6 +6,7 @@ const { DbConnection } = require('./db/Connect');
 const { connect } = require('./db/MongooseConnect');
 const questionRoutes = require('./routes/QuizRoutes');
 const answerRoutes = require('./routes/UserRoutes');
+const attemptRoutes = require('./routes/AttemptRoutes');
 
 console.log(connect())
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(cors());
 app.use(questionRoutes);
 app.use(answerRoutes);
+app.use(attemptRoutes);
 
 app.get('/api', (req, res) => {
     res.json({message: 'hello'})

@@ -1,4 +1,3 @@
-const Quiz = require('../models/Quiz');
 const { 
     createService, 
     listByUserIdService, 

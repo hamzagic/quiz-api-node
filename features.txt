@@ -1,12 +1,17 @@
-User can create account
-User can delete their account (will delete all quizzes as well)
-When deleting user account, save analytics without user sensitive data
-User can create a quiz
-Quiz has image
-Questions have images
-User can edit a quiz if it is not shared
-Shared link is generated
+Features yet to be added:
 
-Add logger to api.
+1. Signup
+2. Delete account with deleting quiz data as well. 
+3. When deleting user account, save analytics without user sensitive data
+4. Ability to add an image to a quiz
+5. Ability to add an image to a question 
+6. Logger
+7. Save attempts, i.e. data users submit when answering the quiz
+8. Add role when creating a user.
 
-As soon as the quiz is generated, 
+Security:
+1. When in production, only allow the api to be served to the client's specific host.
+2. Limit the number of login attemps to avoid brute force.
+3. Sanitize all data.
+4. Limit the amount of endpoint requests per second or minute to avoid DDOS attacks.
+5. Role access management to secure admin and users endpoints.
