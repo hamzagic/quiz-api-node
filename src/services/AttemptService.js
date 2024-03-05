@@ -22,7 +22,8 @@ const createService = async (data) => {
         email: data.email,
         quizToken: data.quizToken,
         answers: data.answers,
-        differences: arraysAreEqual(correctAnswersQuiz, answers) ? {} : arrayDifferences(correctAnswersQuiz, answers)
+        differences: arraysAreEqual(correctAnswersQuiz, answers) ? {} : arrayDifferences(correctAnswersQuiz, answers),
+        quiz
       });
       await newAttempt.save();
       return newAttempt;
