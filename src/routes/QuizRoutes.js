@@ -2,7 +2,15 @@ const express = require('express');
 const router = express.Router();
 const quizValidation = require('../validations/quizValidation');
 
-const { create, listByUserId, deleteQuiz, getDetails, update, share, renderOnPage } = require('../controllers/QuizController');
+const { 
+    create, 
+    listByUserId, 
+    deleteQuiz, 
+    getDetails, 
+    update, 
+    share, 
+    renderOnPage
+} = require('../controllers/QuizController');
 
 router.use((req, res, next) => {
     console.log('router');

@@ -9,7 +9,7 @@ const create = async (req, res) => {
   } 
   const result = await createService({name, email, quizToken, answers});
   if (!result.error) {
-    res.json({message: 'Quiz submitted successfully'}); 
+    res.json({message: 'Quiz submitted successfully', result}); 
   }
 }
 

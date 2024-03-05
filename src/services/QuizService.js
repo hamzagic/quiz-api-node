@@ -150,5 +150,5 @@ module.exports = {
   deleteByCreator, 
   updateService,
   shareQuizService,
-  getQuizClientData 
+  getQuizClientData
 };

@@ -71,4 +71,12 @@ const renderOnPage = async (req, res) => {
     res.json({data: result});
 }
 
-module.exports = { create, listByUserId, update, deleteQuiz, getDetails, share, renderOnPage };
+module.exports = { 
+    create, 
+    listByUserId, 
+    update, 
+    deleteQuiz, 
+    getDetails, 
+    share, 
+    renderOnPage
+};
