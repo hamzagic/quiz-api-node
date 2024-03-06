@@ -15,3 +15,6 @@ Security:
 3. Sanitize all data.
 4. Limit the amount of endpoint requests per second or minute to avoid DDOS attacks.
 5. Role access management to secure admin and users endpoints.
+6. Rename 'token' to make it more secure.
+7. Add login token to db and verify it whenever a request is received.
+8. Add an expiration date for tokens and implement proper error handling.

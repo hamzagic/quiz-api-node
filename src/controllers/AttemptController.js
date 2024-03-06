@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
-const { createService } = require('../services/AttemptService');
+const { createService, listByCreatorService } = require('../services/AttemptService');
+const { jwtDecode } = require('jwt-decode');
 
 const create = async (req, res) => {
   const { name, email, quizToken, answers } = req.body;
@@ -13,4 +14,22 @@ const create = async (req, res) => {
   }
 }
 
-module.exports = { create };
+const listByCreator = async (req, res) => {
+  const id = req.params.id;
+  const token = req.headers?.token;
+  try {
+    const decoded = jwtDecode(token);
+    if (decoded) {
+      if (decoded.id === id) {
+        const result = await listByCreatorService(id);
+        res.json(result);
+      } else {
+        res.status(401).json({error: 'Invalid token'});
+      }
+    }
+  } catch (error) {
+    res.status(401).json({error: 'Invalid token'});
+  }
+}
+
+module.exports = { create, listByCreator };

@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const Attempt = require('../models/Attempt');
 const Quiz = require('../models/Quiz');
 const { arrayDifferences, arraysAreEqual } = require('../utils/answersUtils');
@@ -44,4 +45,15 @@ const createService = async (data) => {
   }
 }
 
-module.exports = { createService };
+const listByCreatorService = async (id) => {
+  // list all quizzes by creator which has a shared link
+  try {
+    const quiz = await Quiz.find({creator: id, sharedLink: { $exists:true }});
+    return quiz;
+    
+  } catch (error) {
+    return error;
+  }
+}
+
+module.exports = { createService, listByCreatorService };
