@@ -15,9 +15,7 @@ const arrayDifferences = (correctAnswers, answers) => {
   const maxLength = correctAnswers.length;
 
   for (let i = 0; i < maxLength; i++) {
-    if (correctAnswers[i] !== answers[i]) {
-      differences.push({questionIndex: i, correct: correctAnswers[i], answered: answers[i]});
-    }
+    differences.push({questionIndex: i, correct: correctAnswers[i], answered: answers[i]});
   }
 
   return differences;

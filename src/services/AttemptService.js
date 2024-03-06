@@ -15,6 +15,13 @@ const createService = async (data) => {
     };
     
     const correctAnswersQuiz = getCorrectAnswers();
+    const differences = arrayDifferences(correctAnswersQuiz, answers);
+
+    const getScore = () => {
+      const totalQuestions = quiz.questions.length;
+      const totalErrors = differences && differences.length > 0 ? differences.length : 0;
+      return `${totalQuestions - totalErrors} / ${totalQuestions}`;
+    }
 
     try {
       const newAttempt = new Attempt({
@@ -22,7 +29,8 @@ const createService = async (data) => {
         email: data.email,
         quizToken: data.quizToken,
         answers: data.answers,
-        differences: arraysAreEqual(correctAnswersQuiz, answers) ? {} : arrayDifferences(correctAnswersQuiz, answers),
+        answerData: arrayDifferences(correctAnswersQuiz, answers),
+        score: getScore(),
         quiz
       });
       await newAttempt.save();

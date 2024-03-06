@@ -9,8 +9,9 @@ const attemptSchema = new Schema({
   email: { type: String },
   dateSent: { type: Date, default: Date.now }, 
   answers: [],
-  differences: {},
-  quiz: {}
+  answerData: {},
+  quiz: {},
+  score: { type: String }
 });
 
 const Attempt = mongoose.model('Attempt', attemptSchema);
