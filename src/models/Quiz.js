@@ -35,7 +35,7 @@ const quizSchema = new Schema({
     ],
     numberOfQuestions: {type: Number, required: true},
     created: { type: Date },
-    sharedLink: { type: String, unique: true }
+    sharedLink: { type: String, unique: true, sparse: true }
 });
 
 const Quiz = mongoose.model('Quiz', quizSchema);
