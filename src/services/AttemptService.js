@@ -20,7 +20,8 @@ const createService = async (data) => {
 
     const getScore = () => {
       const totalQuestions = quiz.questions.length;
-      const totalErrors = differences && differences.length > 0 ? differences.length : 0;
+      const totalErrors = differences.wrong;
+      // const totalErrors = differences && differences.length > 0 ? differences.length : 0;
       return `${totalQuestions - totalErrors} / ${totalQuestions}`;
     }
 
@@ -30,7 +31,7 @@ const createService = async (data) => {
         email: data.email,
         quizToken: data.quizToken,
         answers: data.answers,
-        answerData: arrayDifferences(correctAnswersQuiz, answers),
+        answerData: differences.differences,
         score: getScore(),
         quiz
       });

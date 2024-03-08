@@ -13,12 +13,20 @@ const arraysAreEqual = (correctAnswers, answers) => {
 const arrayDifferences = (correctAnswers, answers) => {
   const differences = [];
   const maxLength = correctAnswers.length;
+  let correct = 0;
+  let wrong = 0;
 
   for (let i = 0; i < maxLength; i++) {
-    differences.push({questionIndex: i, correct: correctAnswers[i], answered: answers[i]});
+    if (correctAnswers[i] !== answers[i]) {
+      differences.push({questionIndex: i, correct: correctAnswers[i], answered: answers[i]});
+      wrong++;
+    } else {
+      differences.push({questionIndex: i, correct: correctAnswers[i], answered: correctAnswers[i]});
+      correct++;
+    }
   }
 
-  return differences;
+  return {differences, correct, wrong};
 }
 
 module.exports = { arraysAreEqual, arrayDifferences };
