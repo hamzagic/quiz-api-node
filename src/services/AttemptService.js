@@ -33,7 +33,8 @@ const createService = async (data) => {
         answers: data.answers,
         answerData: differences.differences,
         score: getScore(),
-        quiz
+        quiz,
+        creator: quiz.creator
       });
       await newAttempt.save();
       return newAttempt;
@@ -46,6 +47,7 @@ const createService = async (data) => {
   }
 }
 
+// todo: move this method to QuizServices
 const listByCreatorService = async (id) => {
   // list all quizzes by creator which has a shared link
   try {
@@ -57,4 +59,29 @@ const listByCreatorService = async (id) => {
   }
 }
 
-module.exports = { createService, listByCreatorService };
+// todo: add a limit
+const listAttemptsService = async (id) => {
+  try {
+    const results = await Attempt.aggregate([
+      // Match documents with the given creator ID
+      { $match: { creator: id } },
+    
+      {
+        $facet: {
+          data: [{ $match: {} }], 
+          totalCount: [{ $count: 'count' }]
+        }
+      }
+    ]);
+  
+    const attempts = results[0].data;
+    const totalCount = results[0].totalCount.length > 0 ? results[0].totalCount[0].count : 0;
+  
+    return { totalCount, attempts };
+    
+  } catch (error) {
+    return error;
+  }
+}
+
+module.exports = { createService, listByCreatorService, listAttemptsService };

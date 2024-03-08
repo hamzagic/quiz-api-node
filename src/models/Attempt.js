@@ -11,7 +11,8 @@ const attemptSchema = new Schema({
   answers: [],
   answerData: {},
   quiz: {},
-  score: { type: String }
+  score: { type: String },
+  creator: { type: String }
 });
 
 const Attempt = mongoose.model('Attempt', attemptSchema);
